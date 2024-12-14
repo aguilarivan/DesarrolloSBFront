@@ -4,17 +4,22 @@ import SearchBar from '../components/SearchBar';
 import VendorTable from '../components/VendorTable';
 import Modal from '../components/Modal';
 import CreateVendorForm from '../components/CreateVendorForm';
+import { use } from 'react';
+import { getVendedores } from '../utils/vendedor';
 
-const initialVendors = [
-  { id: 1, nombre: "La Parrillada d...", pais: "Argentina", ciudad: "Santa Fe", calle: "Mitre", altura: "2328" },
-  { id: 2, nombre: "Panaderia Los...", pais: "Argentina", ciudad: "Rosario", calle: "Belgrano", altura: "1456" },
-  { id: 3, nombre: "Heladeria Dulc...", pais: "Argentina", ciudad: "Bariloche", calle: "Colón", altura: "1024" }
-];
 
 const VendedoresPage = () => {
-  const [vendors, setVendors] = useState(initialVendors);
+  const [vendors, setVendors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const obtenerVendedores = async () => {
+      const response = await getVendedores();
+      return response;
+    }
+    setVendors(obtenerVendedores());
+  }, []);
 
   const filteredVendors = vendors.filter(vendor =>
     vendor.nombre.toLowerCase().includes(searchTerm.toLowerCase())

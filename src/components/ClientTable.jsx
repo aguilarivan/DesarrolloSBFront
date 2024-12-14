@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { deleteCliente } from '../utils/cliente';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import ClienteEdit from './ClientEdit';
+import Modal from './Modal';
+
+const handleDelete = (client) => { console.log("Borrando cliente..."); const response = deleteCliente(client); console.log("Cliente borrado:", response)};
 
 const ClientTable = ({ clients }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden text-black">
       <table className="w-full">
@@ -24,10 +31,16 @@ const ClientTable = ({ clients }) => {
               <td className="px-6 py-4 whitespace-nowrap">{client.calle}</td>
               <td className="px-6 py-4 whitespace-nowrap">{client.altura}</td>
               <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
-                <button className="text-indigo-600 hover:text-indigo-900 mr-4 bg-gray-200">
+                <button className="text-indigo-600 hover:text-indigo-900 mr-4 bg-gray-200" onClick={() => setIsModalOpen(true)}>
                   <PencilIcon className="h-5 w-5" />
                 </button>
-                <button className="text-red-600 hover:text-red-900 bg-gray-200">
+                <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                  <ClienteEdit 
+                    onCancel={() => setIsModalOpen(false)}
+                    client={client}
+                  />
+                </Modal>
+                <button className="text-red-600 hover:text-red-900 bg-gray-200" onClick={() => handleDelete(client)}>
                   <TrashIcon className="h-5 w-5" />
                 </button>
               </td>
@@ -35,6 +48,7 @@ const ClientTable = ({ clients }) => {
           ))}
         </tbody>
       </table>
+      
     </div>
   );
 };

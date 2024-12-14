@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-
-const CreateClientForm = ({ onCancel, onConfirm }) => {
+import { editCliente } from '../utils/cliente';
+const ClienteEdit = ({ onCancel, client }) => {
+    console.log("editando cliente: " , client)
   const [formData, setFormData] = useState({
-    nombre: '',
-    cuit: '',
-    mail: '',
-    latitud: '',
-    longitud: '',
-    pais: '',
-    ciudad: '',
-    calle: '',
-    altura: ''
+    id: client.id,
+    nombre: client.nombre,
+    cuit: client.cuit,
+    mail: client.mail,
+    latitud: client.latitud,
+    longitud: client.longitud,
+    pais: client.pais,
+    ciudad: client.ciudad,
+    calle: client.calle,
+    altura: client.altura
   });
 
   const handleChange = (e) => {
@@ -22,9 +24,8 @@ const CreateClientForm = ({ onCancel, onConfirm }) => {
   };
 
   const handleGuardar = () => {
-    console.log("Guardando cliente...");
-    console.log(formData);
-    const response = createCliente(formData);
+    console.log("Editnado cliente...");
+    const response = editCliente(formData);
     console.log(response);
   };
 
@@ -36,7 +37,7 @@ const CreateClientForm = ({ onCancel, onConfirm }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg mx-auto w-full h-full">
       <div className="bg-gray-200 p-4 rounded-t-lg">
-        <h2 className="text-xl font-semibold text-gray-800">Crear Cliente</h2>
+        <h2 className="text-xl font-semibold text-gray-800">Editar Cliente</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="p-6">
@@ -206,5 +207,5 @@ const CreateClientForm = ({ onCancel, onConfirm }) => {
   );
 };
 
-export default CreateClientForm;
+export default ClienteEdit;
 

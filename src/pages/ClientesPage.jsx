@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import SearchBar from '../components/SearchBar';
 import ClientTable from '../components/ClientTable';
 import Modal from '../components/Modal';
 import CreateClientForm from '../components/CreateClientForm';
+import { getClientes } from '../utils/cliente';
 
-const initialClients = [
-  { id: 1, nombre: "Mateo Gastaldi", pais: "Argentina", ciudad: "Santa Fe", calle: "Llerena", altura: "2240" },
-  { id: 2, nombre: "Sofia Rodriguez", pais: "Argentina", ciudad: "Rosario", calle: "Mitre", altura: "125" },
-  { id: 3, nombre: "Lucas Martinez", pais: "Argentina", ciudad: "Córdoba", calle: "San Martin", altura: "3500" }
-];
+
 
 const ClientesPage = () => {
-  const [clients, setClients] = useState(initialClients);
+  const [clients, setClients] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    const obtenerClientes = async () => {
+      const response = await getClientes();
+      return response;
+    }
+    setClients(obtenerClientes());
+  }, []);
+
 
   const filteredClients = clients.filter(client =>
     client.nombre.toLowerCase().includes(searchTerm.toLowerCase())
