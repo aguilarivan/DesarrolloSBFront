@@ -15,11 +15,17 @@ const VendedoresPage = () => {
 
   useEffect(() => {
     const obtenerVendedores = async () => {
-      const response = await getVendedores();
-      return response;
-    }
-    setVendors(obtenerVendedores());
-  }, []);
+      try {
+        const response = await getVendedores();
+        const data = await response.json(); // Solo llamas a json() una vez
+        setVendors(data); // Ahora actualizas el estado con los datos
+      } catch (error) {
+        console.error("Error al obtener los vendedores:", error);
+      }
+    };
+
+    obtenerVendedores();
+  }, []); // Este effect se ejecuta solo una vez cuando el componente se monta
 
   const filteredVendors = vendors.filter(vendor =>
     vendor.nombre.toLowerCase().includes(searchTerm.toLowerCase())
