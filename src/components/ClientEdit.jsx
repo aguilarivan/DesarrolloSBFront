@@ -6,21 +6,46 @@ const ClienteEdit = ({ onCancel, client , onConfirm}) => {
     id: client.id,
     nombre: client.nombre,
     cuit: client.cuit,
-    mail: client.mail,
-    latitud: client.latitud,
-    longitud: client.longitud,
-    pais: client.pais,
-    ciudad: client.ciudad,
-    calle: client.calle,
-    altura: client.altura
+    email: client.email,
+    coordenadas:{
+      lat: client.coordenadas.lat,
+      lng: client.coordenadas.lng
+
+    },
+    direccion:{
+      pais: client.direccion.pais,
+      ciudad: client.direccion.ciudad,
+      calle: client.direccion.calle,
+      altura: client.direccion.altura
+    }
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+
+    // Comprobar si la propiedad pertenece a "direccion" o "coordenadas"
+    if (["pais", "ciudad", "calle", "altura"].includes(name)) {
+      setFormData((prev) => ({
+        ...prev,
+        direccion: {
+          ...prev.direccion,
+          [name]: value,
+        },
+      }));
+    } else if (["lat", "lng"].includes(name)) {
+      setFormData((prev) => ({
+        ...prev,
+        coordenadas: {
+          ...prev.coordenadas,
+          [name]: parseFloat(value), // Convertir coordenadas a número
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   
@@ -77,8 +102,8 @@ const ClienteEdit = ({ onCancel, client , onConfirm}) => {
               <input
                 type="email"
                 id="mail"
-                name="mail"
-                value={formData.mail}
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required
@@ -93,8 +118,8 @@ const ClienteEdit = ({ onCancel, client , onConfirm}) => {
                 type="number"
                 step="any"
                 id="latitud"
-                name="latitud"
-                value={formData.latitud}
+                name="lat"
+                value={formData.coordenadas.lat}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required
@@ -109,8 +134,8 @@ const ClienteEdit = ({ onCancel, client , onConfirm}) => {
                 type="number"
                 step="any"
                 id="longitud"
-                name="longitud"
-                value={formData.longitud}
+                name="lng"
+                value={formData.coordenadas.lng}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required
@@ -128,7 +153,7 @@ const ClienteEdit = ({ onCancel, client , onConfirm}) => {
                 type="text"
                 id="pais"
                 name="pais"
-                value={formData.pais}
+                value={formData.direccion.pais}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required
@@ -143,7 +168,7 @@ const ClienteEdit = ({ onCancel, client , onConfirm}) => {
                 type="text"
                 id="ciudad"
                 name="ciudad"
-                value={formData.ciudad}
+                value={formData.direccion.ciudad}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required
@@ -158,7 +183,7 @@ const ClienteEdit = ({ onCancel, client , onConfirm}) => {
                 type="text"
                 id="calle"
                 name="calle"
-                value={formData.calle}
+                value={formData.direccion.calle}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required
@@ -173,7 +198,7 @@ const ClienteEdit = ({ onCancel, client , onConfirm}) => {
                 type="text"
                 id="altura"
                 name="altura"
-                value={formData.altura}
+                value={formData.direccion.altura}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required

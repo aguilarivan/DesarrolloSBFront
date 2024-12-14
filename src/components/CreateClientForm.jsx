@@ -4,29 +4,48 @@ const CreateClientForm = ({ onCancel, onConfirm }) => {
   const [formData, setFormData] = useState({
     nombre: '',
     cuit: '',
-    mail: '',
-    latitud: '',
-    longitud: '',
-    pais: '',
-    ciudad: '',
-    calle: '',
-    altura: ''
+    email: '',
+    coordenadas: {
+      lat:'',
+      lng:''
+    },
+    direccion: {
+      pais: '',
+      ciudad: '',
+      calle: '',
+      altura: ''
+    }
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+
+    // Comprobar si la propiedad pertenece a "direccion" o "coordenadas"
+    if (["pais", "ciudad", "calle", "altura"].includes(name)) {
+      setFormData((prev) => ({
+        ...prev,
+        direccion: {
+          ...prev.direccion,
+          [name]: value,
+        },
+      }));
+    } else if (["lat", "lng"].includes(name)) {
+      setFormData((prev) => ({
+        ...prev,
+        coordenadas: {
+          ...prev.coordenadas,
+          [name]: parseFloat(value), // Convertir coordenadas a número
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
-  const handleGuardar = () => {
-    console.log("Guardando cliente...");
-    console.log(formData);
-    const response = createCliente(formData);
-    console.log(response);
-  };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -80,8 +99,8 @@ const CreateClientForm = ({ onCancel, onConfirm }) => {
               <input
                 type="email"
                 id="mail"
-                name="mail"
-                value={formData.mail}
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required
@@ -96,8 +115,8 @@ const CreateClientForm = ({ onCancel, onConfirm }) => {
                 type="number"
                 step="any"
                 id="latitud"
-                name="latitud"
-                value={formData.latitud}
+                name="lat"
+                value={formData.lat}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required
@@ -112,8 +131,8 @@ const CreateClientForm = ({ onCancel, onConfirm }) => {
                 type="number"
                 step="any"
                 id="longitud"
-                name="longitud"
-                value={formData.longitud}
+                name="lng"
+                value={formData.lng}
                 onChange={handleChange}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
                 required
@@ -196,7 +215,6 @@ const CreateClientForm = ({ onCancel, onConfirm }) => {
           <button
             type="submit"
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            onClick={handleGuardar}
           >
             Confirmar
           </button>

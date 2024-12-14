@@ -1,6 +1,6 @@
 
 export async function createCliente(cliente){
-    return await fetch(`http://localhost:8080/clientes/`, {
+    return await fetch(`http://localhost:8080/clientes`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json'
@@ -10,7 +10,7 @@ export async function createCliente(cliente){
     }
 
 export async function deleteCliente(cliente){
-    return await fetch(`http://localhost:8080/clientes/${cliente.id}/`,{
+    return await fetch(`http://localhost:8080/clientes/${cliente.id}`,{
         method:'DELETE',
         headers:{
             'Content-Type': 'application/json'
@@ -20,7 +20,7 @@ export async function deleteCliente(cliente){
 }
 
 export async function editCliente(cliente){
-    return await fetch(`http://localhost:8080/clientes/${cliente.id}/`,{
+    return await fetch(`http://localhost:8080/clientes/${cliente.id}`,{
         method:'PUT',
         headers:{
             'Content-Type': 'application/json'
@@ -30,7 +30,7 @@ export async function editCliente(cliente){
 }
 
 export async function getClientes(){
-    return await fetch(`http://localhost:8080/clientes/`,{
+    return await fetch(`http://localhost:8080/clientes`,{
         method:'GET',
         headers:{
             'Content-Type': 'application/json'

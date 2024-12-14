@@ -4,7 +4,7 @@ import SearchBar from '../components/SearchBar';
 import ClientTable from '../components/ClientTable';
 import Modal from '../components/Modal';
 import CreateClientForm from '../components/CreateClientForm';
-import { getClientes } from '../utils/cliente';
+import { getClientes, createCliente } from '../utils/cliente';
 
 
 
@@ -14,12 +14,17 @@ const ClientesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const obtenerClientes = async () => {
-      const response = await getClientes();
-      return response;
-    }
-    setClients(obtenerClientes());
-  }, []);
+      const obtenerClientes = async () => {
+        try {
+          const response = await getClientes();
+          const data = await response.json(); // Solo llamas a json() una vez
+          setClients(data); // Ahora actualizas el estado con los datos
+        } catch (error) {
+          console.error("Error al obtener los clientes:", error);
+        }
+      };
+      obtenerClientes();
+    }, []);
 
 
   const filteredClients = clients.filter(client =>
@@ -27,10 +32,17 @@ const ClientesPage = () => {
   );
 
   const handleCreateClient = (formData) => {
+
     const newClient = {
       id: clients.length + 1,
       ...formData
     };
+    try{
+      const response = createCliente(formData);
+    }
+    catch(error){
+      console.error("Error al crear el cliente:", error);
+    }
     setClients([...clients, newClient]);
     setIsModalOpen(false);
   };

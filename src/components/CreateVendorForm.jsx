@@ -3,21 +3,39 @@ import React, { useState } from 'react';
 const CreateVendorForm = ({ onCancel, onConfirm }) => {
   const [formData, setFormData] = useState({
     nombre: '',
-    latitud: '',
-    longitud: '',
-    pais: '',
-    ciudad: '',
-    calle: '',
-    altura: ''
+    coordenadas: {
+      lat:"",
+      lng:"",
+    },
+    direccion:{
+      pais: '',
+      ciudad: '',
+      calle: '',
+      altura: ''
+    }
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  
+    // Verifica si el campo pertenece a propiedades anidadas
+    if (name.includes('.')) {
+      const [parent, child] = name.split('.'); // Divide el nombre en las partes (ej: "direccion.calle")
+      setFormData((prev) => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent], // Mantén el resto de las propiedades de la sección
+          [child]: value, // Actualiza solo la propiedad específica
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,7 +60,7 @@ const CreateVendorForm = ({ onCancel, onConfirm }) => {
               name="nombre"
               value={formData.nombre}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent "
+              className="w-full p-2 border border-gray-300 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700"
               required
             />
           </div>
@@ -54,10 +72,10 @@ const CreateVendorForm = ({ onCancel, onConfirm }) => {
             <input
               type="text"
               id="pais"
-              name="pais"
-              value={formData.pais}
+              name="direccion.pais"
+              value={formData.direccion.pais}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full p-2 border border-gray-300 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700"
               required
             />
           </div>
@@ -70,10 +88,10 @@ const CreateVendorForm = ({ onCancel, onConfirm }) => {
               type="number"
               step="any"
               id="latitud"
-              name="latitud"
-              value={formData.latitud}
+              name="coordenadas.lat"
+              value={formData.coordenadas.lat}
               onChange={handleChange}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
               required
             />
           </div>
@@ -85,10 +103,10 @@ const CreateVendorForm = ({ onCancel, onConfirm }) => {
             <input
               type="text"
               id="ciudad"
-              name="ciudad"
-              value={formData.ciudad}
+              name="direccion.ciudad"
+              value={formData.direccion.ciudad}
               onChange={handleChange}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
               required
             />
           </div>
@@ -101,10 +119,10 @@ const CreateVendorForm = ({ onCancel, onConfirm }) => {
               type="number"
               step="any"
               id="longitud"
-              name="longitud"
-              value={formData.longitud}
+              name="coordenadas.lng"
+              value={formData.coordenadas.lng}
               onChange={handleChange}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
               required
             />
           </div>
@@ -116,10 +134,10 @@ const CreateVendorForm = ({ onCancel, onConfirm }) => {
             <input
               type="text"
               id="calle"
-              name="calle"
-              value={formData.calle}
+              name="direccion.calle"
+              value={formData.direccion.calle}
               onChange={handleChange}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
               required
             />
           </div>
@@ -131,10 +149,10 @@ const CreateVendorForm = ({ onCancel, onConfirm }) => {
             <input
               type="text"
               id="altura"
-              name="altura"
-              value={formData.altura}
+              name="direccion.altura"
+              value={formData.direccion.altura}
               onChange={handleChange}
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200 text-gray-700"
               required
             />
           </div>

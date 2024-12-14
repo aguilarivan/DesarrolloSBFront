@@ -5,7 +5,7 @@ import VendorTable from '../components/VendorTable';
 import Modal from '../components/Modal';
 import CreateVendorForm from '../components/CreateVendorForm';
 import { useEffect } from 'react';
-import { getVendedores } from '../utils/vendedor';
+import { getVendedores,createVendedor } from '../utils/vendedor';
 
 
 const VendedoresPage = () => {
@@ -31,11 +31,17 @@ const VendedoresPage = () => {
     vendor.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleCreateVendor = (formData) => {
+  const handleCreateVendor = async function (formData) {
     const newVendor = {
       id: vendors.length + 1,
       ...formData
     };
+    try{
+      const response = await createVendedor(formData);
+    }
+    catch(error){
+      console.error("Error al crear el vendedor:", error);
+    }
     setVendors([...vendors, newVendor]);
     setIsModalOpen(false);
   };
