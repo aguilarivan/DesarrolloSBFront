@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { editCliente } from '../utils/cliente';
-const ClienteEdit = ({ onCancel, client }) => {
+const ClienteEdit = ({ onCancel, client , onConfirm}) => {
     console.log("editando cliente: " , client)
   const [formData, setFormData] = useState({
     id: client.id,
@@ -23,11 +23,7 @@ const ClienteEdit = ({ onCancel, client }) => {
     }));
   };
 
-  const handleGuardar = () => {
-    console.log("Editnado cliente...");
-    const response = editCliente(formData);
-    console.log(response);
-  };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -197,7 +193,6 @@ const ClienteEdit = ({ onCancel, client }) => {
           <button
             type="submit"
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            onClick={handleGuardar}
           >
             Confirmar
           </button>

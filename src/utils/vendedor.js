@@ -1,6 +1,6 @@
 
 export async function createVendedor(vendedor){
-    return await fetch(`http://localhost:8080/vendedores/`, {
+    return await fetch(`http://localhost:8080/vendedores`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json'
@@ -10,7 +10,7 @@ export async function createVendedor(vendedor){
     };
 
 export async function deleteVendedor(vendedor){
-        return await fetch(`http://localhost:8080/vendedores/${vendedor.id}/`,{
+        return await fetch(`http://localhost:8080/vendedores/${vendedor.id}`,{
             method:'DELETE',
             headers:{
                 'Content-Type': 'application/json'
@@ -20,13 +20,16 @@ export async function deleteVendedor(vendedor){
     };
 
     export async function editVendedor(vendedor){
-        return await fetch(`http://localhost:8080/vendedores/${vendedor.id}/`,{
+        console.log("id",vendedor.id);
+        try{return await fetch(`http://localhost:8080/vendedores/${vendedor.id}`,{
             method:'PUT',
             headers:{
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(vendedor)
-        });
+        });}catch(error){
+            console.error("Error al editar el vendedor:", error);
+        }
     };
 
     export async function getVendedores() {

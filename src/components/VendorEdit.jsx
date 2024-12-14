@@ -1,34 +1,56 @@
 import React, { useState } from "react";
+import { editVendedor } from "../utils/vendedor";
 
-const VendorEdit = ({ onConfirm, vendor }) => {
+const VendorEdit = ({ onCancel, vendor, onConfirm }) => {
   const [formData, setFormData] = useState({
+    id: vendor.id,
     nombre: vendor.nombre,
-    latitud: vendor.latitud,
-    longitud: vendor.longitud,
-    pais: vendor.pais,
-    ciudad: vendor.ciudad,
-    calle: vendor.calle,
-    altura: vendor.altura,
+    coordenadas: {
+      lat: vendor.coordenadas.lat,
+      lng: vendor.coordenadas.lng,
+    },
+    direccion: {
+      pais: vendor.direccion.pais,
+      ciudad: vendor.direccion.ciudad,
+      calle: vendor.direccion.calle,
+      altura: vendor.direccion.altura,
+    },
   });
 
-  handleGuardar = () => {
-    console.log("Editando vendedor...");
-    const response = editVendor(formData);
-    console.log(response);
-  };
-
+  // Manejar cambios en los campos
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    // Comprobar si la propiedad pertenece a "direccion" o "coordenadas"
+    if (["pais", "ciudad", "calle", "altura"].includes(name)) {
+      setFormData((prev) => ({
+        ...prev,
+        direccion: {
+          ...prev.direccion,
+          [name]: value,
+        },
+      }));
+    } else if (["lat", "lng"].includes(name)) {
+      setFormData((prev) => ({
+        ...prev,
+        coordenadas: {
+          ...prev.coordenadas,
+          [name]: parseFloat(value), // Convertir coordenadas a número
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onConfirm(formData);
   };
+  
 
   return (
     <div className="bg-white rounded-lg shadow-lg mx-auto w-full h-full">
@@ -61,7 +83,7 @@ const VendorEdit = ({ onConfirm, vendor }) => {
               type="text"
               id="pais"
               name="pais"
-              value={formData.pais}
+              value={formData.direccion.pais}
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 bg-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
@@ -69,15 +91,15 @@ const VendorEdit = ({ onConfirm, vendor }) => {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="latitud" className="block font-medium text-gray-700">
+            <label htmlFor="lat" className="block font-medium text-gray-700">
               Latitud:
             </label>
             <input
               type="number"
               step="any"
-              id="latitud"
-              name="latitud"
-              value={formData.latitud}
+              id="lat"
+              name="lat"
+              value={formData.coordenadas.lat}
               onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
               required
@@ -92,7 +114,7 @@ const VendorEdit = ({ onConfirm, vendor }) => {
               type="text"
               id="ciudad"
               name="ciudad"
-              value={formData.ciudad}
+              value={formData.direccion.ciudad}
               onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
               required
@@ -100,15 +122,15 @@ const VendorEdit = ({ onConfirm, vendor }) => {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="longitud" className="block font-medium text-gray-700">
+            <label htmlFor="lng" className="block font-medium text-gray-700">
               Longitud:
             </label>
             <input
               type="number"
               step="any"
-              id="longitud"
-              name="longitud"
-              value={formData.longitud}
+              id="lng"
+              name="lng"
+              value={formData.coordenadas.lng}
               onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
               required
@@ -123,7 +145,7 @@ const VendorEdit = ({ onConfirm, vendor }) => {
               type="text"
               id="calle"
               name="calle"
-              value={formData.calle}
+              value={formData.direccion.calle}
               onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
               required
@@ -138,7 +160,7 @@ const VendorEdit = ({ onConfirm, vendor }) => {
               type="text"
               id="altura"
               name="altura"
-              value={formData.altura}
+              value={formData.direccion.altura}
               onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent border-gray-300 bg-gray-200"
               required
@@ -147,10 +169,17 @@ const VendorEdit = ({ onConfirm, vendor }) => {
         </div>
 
         <div className="flex justify-end gap-4 mt-8">
-          <button type="button" onClick={onCancel} className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
             Cancelar
           </button>
-          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" onClick={handleGuardar}>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
             Confirmar
           </button>
         </div>

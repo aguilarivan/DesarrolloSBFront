@@ -9,6 +9,13 @@ const handleDelete = (client) => { console.log("Borrando cliente..."); const res
 const ClientTable = ({ clients }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleGuardar = () => {
+    console.log("Editnado cliente...");
+    const response = editCliente(formData);
+    setIsModalOpen(false);
+    console.log(response);
+  };
+
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden text-black">
       <table className="w-full">
@@ -38,6 +45,7 @@ const ClientTable = ({ clients }) => {
                   <ClienteEdit 
                     onCancel={() => setIsModalOpen(false)}
                     client={client}
+                    onConfirm={handleGuardar}
                   />
                 </Modal>
                 <button className="text-red-600 hover:text-red-900 bg-gray-200" onClick={() => handleDelete(client)}>
