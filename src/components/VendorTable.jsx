@@ -2,9 +2,12 @@ import React from 'react';
 import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Modal from './Modal';
 import { deleteVendedor } from '../utils/vendedor';
+import VendorEdit from './VendorEdit';
 
 const VendorTable = ({ vendors }) => {
-  handleDelete = (vendor) => {console.log("Borrando vendedor..."); const response = deleteVendedor(vendor); console.log("Vendedor borrado:", response)};
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const handleDelete = (vendor) => { console.log("Borrando vendedor..."); const response = deleteVendedor(vendor); console.log("Vendedor borrado:", response) };
+  
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden text-black">
       <table className="w-full">

@@ -29,11 +29,17 @@ export async function deleteVendedor(vendedor){
         });
     };
 
-    export async function getVendedores(){
-        return await fetch(`http://localhost:8080/vendedores/`,{
-            method:'GET',
-            headers:{
-                'Content-Type': 'application/json'
-            }
-        });
-    };
+    export async function getVendedores() {
+        try {
+            const response = await fetch("http://localhost:8080/vendedores", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            return response;
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+            throw error; // Lanza el error para que sea manejado en el componente
+        }
+    }
