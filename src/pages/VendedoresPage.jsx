@@ -4,7 +4,7 @@ import SearchBar from '../components/SearchBar';
 import VendorTable from '../components/VendorTable';
 import Modal from '../components/Modal';
 import CreateVendorForm from '../components/CreateVendorForm';
-import { use } from 'react';
+import { useEffect } from 'react';
 import { getVendedores } from '../utils/vendedor';
 
 

@@ -6,31 +6,23 @@ import Modal from '../components/Modal';
 import Categories from '../components/Categories';
 import CreatePlatoForm from '../components/CreatePlatoForm';
 import CreateBebidaForm from '../components/CreateBebidaForm'
+import { useEffect} from 'react';
 
-const initialMenuItems = [
-  { id: 1, nombre: "Parrillada para...", precio: 15600.0, vendedor: "La Parrillada d...", categoria: "Plato Principal", aptoVegano: false, aptoCeliaco: true },
-  { id: 2, nombre: "Milanesa con p...", precio: 12000.0, vendedor: "La Parrillada d...", categoria: "Plato Principal", aptoVegano: false, aptoCeliaco: false },
-  { id: 3, nombre: "Ensalada Cés...", precio: 8900.0, vendedor: "La Parrillada d...", categoria: "Plato Principal", aptoVegano: true, aptoCeliaco: true },
-  { id: 4, nombre: "Sopa de verdu...", precio: 5600.0, vendedor: "La Parrillada d...", categoria: "Entrada", aptoVegano: true, aptoCeliaco: true },
-  { id: 5, nombre: "Pizza Margarita", precio: 15000.0, vendedor: "La Parrillada d...", categoria: "Plato Principal", aptoVegano: true, aptoCeliaco: false },
-  { id: 6, nombre: "Empanadas d...", precio: 7200.0, vendedor: "La Parrillada d...", categoria: "Entrada", aptoVegano: false, aptoCeliaco: false },
-  { id: 7, nombre: "Cerveza Quil...", precio: 2000.0, vendedor: "La Parrillada d...", categoria: "Cerveza", aptoVegano: true, aptoCeliaco: true },
-  { id: 8, nombre: "Fanta Naranja", precio: 1400.0, vendedor: "La Parrillada d...", categoria: "Gaseosa", aptoVegano: true, aptoCeliaco: true },
-  { id: 9, nombre: "Vino Malbec", precio: 3500.0, vendedor: "La Parrillada d...", categoria: "Vino", aptoVegano: true, aptoCeliaco: true },
-  { id: 10, nombre: "Jugo de naranja", precio: 1200.0, vendedor: "La Parrillada d...", categoria: "Jugos", aptoVegano: true, aptoCeliaco: true }
-];
 
 const ItemMenusPage = () => {
-  const [menuItems, setMenuItems] = useState(initialMenuItems);
+  const [menuItems, setMenuItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isCategoriesModalOpen, setIsCategoriesModalOpen] = useState(false);
   const [isCrearPlatoOpen, setIsCrearPlatoOpen] = useState(false);
   const [isCrearBebidaOpen, setIsCrearBebidaOpen] = useState(false);
 
-
-  const filteredItems = menuItems.filter(item =>
-    item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const obtenerItems = async () => {
+      const response = await getItemMenus();
+      return response;
+    }
+    setMenuItems(obtenerItems());
+  }, []);
 
   return (
     <div className="space-y-6">
