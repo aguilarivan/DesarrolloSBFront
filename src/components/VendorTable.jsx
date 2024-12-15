@@ -37,6 +37,7 @@ const VendorTable = ({ vendors, setVendors }) => {
       console.error('Error al borrar el vendedor:', error);
     }
   };
+  
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden text-black">
       <table className="w-full">

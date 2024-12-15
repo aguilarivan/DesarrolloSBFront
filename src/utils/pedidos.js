@@ -26,3 +26,12 @@ export async function deleteOrder(id){
         }
     });
 }
+
+export async function cambiarEstado(id){
+    return await fetch(`http://localhost:8080/pedidos/changeStatus/${id}`,{
+        method:'PUT',
+        headers:{
+            'Content-Type': 'application/json'
+        }
+    });
+}

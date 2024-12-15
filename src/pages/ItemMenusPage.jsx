@@ -18,6 +18,7 @@ const ItemMenusPage = () => {
   const [isCrearPlatoOpen, setIsCrearPlatoOpen] = useState(false);
   const [isCrearBebidaOpen, setIsCrearBebidaOpen] = useState(false);
 
+
   useEffect(() => {
     const obtenerItems = async () => {
       try {
@@ -95,7 +96,7 @@ const ItemMenusPage = () => {
         </div>
       </div>
 
-      <MenuItemsTable items={filteredItems} setMenuItems={setMenuItems} />
+      <MenuItemsTable items={filteredItems} setMenuItems={setMenuItems}  />
 
       <Modal isOpen={isCategoriesModalOpen} onClose={() => setIsCategoriesModalOpen(false)}>
         <Categories onClose={() => setIsCategoriesModalOpen(false)}/>
@@ -106,6 +107,7 @@ const ItemMenusPage = () => {
       <Modal isOpen={isCrearBebidaOpen} onClose={() => setIsCrearBebidaOpen(false)}>
         <CreateBebidaForm onClose={() => setIsCrearBebidaOpen(false)} onConfirm={handleCreateBebida}/>
       </Modal>
+
     </div>
   );
 };

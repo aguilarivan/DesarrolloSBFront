@@ -70,7 +70,7 @@ const PedidosPage = () => {
         </div>
       </div>
 
-      <OrdersTable orders={filteredPedidos} />
+      <OrdersTable orders={filteredPedidos} setOrders = {setPedidos} />
       <Modal isOpen={isCreateOrderModalOpen} onClose={() => setIsCreateOrderModalOpen(false)}>
         <CreateOrderForm 
           onClose={() => setIsCreateOrderModalOpen(false)}
