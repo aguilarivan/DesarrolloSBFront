@@ -5,23 +5,23 @@ import { deleteVendedor } from '../utils/vendedor';
 import VendorEdit from './VendorEdit';
 import { editVendedor } from '../utils/vendedor';
 
-const VendorTable = ({ vendors }) => {
+const VendorTable = ({ vendors, setVendors }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedVendor, setSelectedVendor] = React.useState(null);
   
-
   const handleEdit = (vendor) => {
     setSelectedVendor(vendor); // Guardar el vendedor seleccionado
     setIsModalOpen(true); // Abrir el modal
   };
+
   const handleGuardar = async (formData) => {
     console.log("Editando vendedor...");
-
+  
     try {
       const response = await editVendedor(formData); // Llamada a la función editVendedor
       console.log("Vendedor editado:", response);
+      setVendors(prevVendors => prevVendors.map(v => v.id === formData.id ? formData : v)); // Actualizar el estado con los datos del backend
       setIsModalOpen(false);
-      
     } catch (error) {
       console.error("Error al editar el vendedor:", error);
     }
@@ -32,12 +32,11 @@ const VendorTable = ({ vendors }) => {
     try {
       const response = await deleteVendedor(vendor);
       console.log('Vendedor borrado:', response);
-
+      setVendors(vendors.filter(v => v.id !== vendor.id)); // Actualizar el estado
     } catch (error) {
       console.error('Error al borrar el vendedor:', error);
     }
   };
-
   return (
     <div className="bg-white shadow rounded-lg overflow-hidden text-black">
       <table className="w-full">

@@ -6,8 +6,10 @@ import Modal from '../components/Modal';
 import Categories from '../components/Categories';
 import CreatePlatoForm from '../components/CreatePlatoForm';
 import CreateBebidaForm from '../components/CreateBebidaForm'
-import { useEffect} from 'react';
-
+import { useEffect } from 'react';
+import { getItemMenus } from '../utils/ItemMenus'; 
+import { createPlato } from '../utils/ItemMenus';
+import { createBebida } from '../utils/ItemMenus';
 
 const ItemMenusPage = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -18,11 +20,45 @@ const ItemMenusPage = () => {
 
   useEffect(() => {
     const obtenerItems = async () => {
-      const response = await getItemMenus();
-      return response;
+      try {
+        const response = await getItemMenus();
+        const data = await response.json();
+        setMenuItems(data);
+        console.log(data);
+      } catch (error) {
+        console.error("Error al obtener los items del menu:", error);
+      }
+
     }
-    setMenuItems(obtenerItems());
+    obtenerItems();
   }, []);
+
+  const handleCreatePlato = async function (formData) {
+    try {
+      const response = await createPlato(formData);
+      const newPlato = await response.json();
+      setMenuItems([...menuItems, newPlato]);
+      setIsCrearPlatoOpen(false);
+    }
+    catch (error) {
+      console.error("Error al crear el plato:", error);
+    }
+  }
+
+  const handleCreateBebida = async function (formData) {
+    try {
+      const response = await createBebida(formData);
+      const newBebida = await response.json();
+      setMenuItems([...menuItems, newBebida]);
+      setIsCrearBebidaOpen(false);
+    }
+    catch (error) {
+      console.error("Error al crear la bebida:", error);
+    }
+  }
+
+
+  const filteredItems = menuItems.filter((item) => item.nombre.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="space-y-6">
@@ -59,21 +95,19 @@ const ItemMenusPage = () => {
         </div>
       </div>
 
-      <MenuItemsTable items={filteredItems} />
+      <MenuItemsTable items={filteredItems} setMenuItems={setMenuItems} />
 
       <Modal isOpen={isCategoriesModalOpen} onClose={() => setIsCategoriesModalOpen(false)}>
         <Categories onClose={() => setIsCategoriesModalOpen(false)}/>
       </Modal>
       <Modal isOpen={isCrearPlatoOpen} onClose={() => setIsCrearPlatoOpen(false)}>
-        <CreatePlatoForm onClose={() => setIsCrearPlatoOpen(false)}/>
+        <CreatePlatoForm onClose={() => setIsCrearPlatoOpen(false)} onConfirm={handleCreatePlato}/>
       </Modal>
       <Modal isOpen={isCrearBebidaOpen} onClose={() => setIsCrearBebidaOpen(false)}>
-        <CreateBebidaForm onClose={() => setIsCrearBebidaOpen(false)}/>
-
+        <CreateBebidaForm onClose={() => setIsCrearBebidaOpen(false)} onConfirm={handleCreateBebida}/>
       </Modal>
     </div>
   );
 };
 
 export default ItemMenusPage;
-

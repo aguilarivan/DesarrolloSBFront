@@ -16,7 +16,7 @@ const CategoriesTable = ({ categories, onDelete }) => {
         <tbody>
           {categories.map((category) => (
             <tr key={category.id} className="hover:bg-gray-50">
-              <td className="px-4 py-2 border-b">{category.nombre}</td>
+              <td className="px-4 py-2 border-b">{category.descripcion}</td>
               <td className="px-4 py-2 border-b">{category.id}</td>
               <td className="px-4 py-2 border-b">{category.tipoItem}</td>
               <td className="px-4 py-2 border-b text-right">
